@@ -5,7 +5,7 @@ from mycroft import MycroftSkill, intent_file_handler
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
-
+        self.register_entity_file('badMood.entity')
         schedule.every().day.at("08:00").do(self.say_Good_Morning)
 
         # Calls function every day at 8 pm
