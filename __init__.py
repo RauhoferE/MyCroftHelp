@@ -61,7 +61,12 @@ class HelpSkill(MycroftSkill):
     def handle_help_intent(self, message):
         # Handle  Help Call
         self.speak_dialog("test")
-        pass
+
+    @intent_handler(IntentBuilder("").require("Kill").require("Me"))
+    def handle_kill_intent(self, message):
+        # Handle  Help Call
+        self.speak_dialog("test")
+        
 
     @intent_handler(IntentBuilder("").require("Good"))
     def handle_pos_res_intent(self, message):
