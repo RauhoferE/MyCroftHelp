@@ -5,7 +5,7 @@ from mycroft import MycroftSkill, intent_file_handler
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
-        
+        self.register
         schedule.every().day.at("08:00").do(self.say_Good_Morning)
 
         # Calls function every day at 8 pm
@@ -35,7 +35,12 @@ class Helperbot(MycroftSkill):
     def handle_neg_res_intent(self, message):
         # Handle Help Call
         # Make Robot Sad 
-        self.speak_dialog("test")
+        mood = message.data.get('badMood')
+        if mood == None:
+            self.speak_dialog("sorry", data={"mood": mood})
+        else:
+            self.speak_dialog("test")
+        
         pass
 
 def create_skill():
