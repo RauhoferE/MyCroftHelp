@@ -57,12 +57,12 @@ class HelpSkill(MycroftSkill):
             self.count -= 1
         self.speak_dialog("count.is.now", data={"count": self.count})
     
-    @intent_handler(IntentBuilder("").require("Help").require("Me"))
+    @intent_handler(IntentBuilder("").require("Help"))
     def handle_help_intent(self, message):
         # Handle  Help Call
         self.speak_dialog("test")
 
-    @intent_handler(IntentBuilder("").require("Kill").require("Me"))
+    @intent_handler(IntentBuilder("").require("Kill"))
     def handle_kill_intent(self, message):
         # Handle  Help Call
         self.speak_dialog("test")
