@@ -60,18 +60,21 @@ class HelpSkill(MycroftSkill):
     @intent_handler(IntentBuilder("").require("Help"))
     def handle_help_intent(self, message):
         # Handle  Help Call
+        self.speak_dialog("test")
         pass
 
     @intent_handler(IntentBuilder("").require("Good"))
     def handle_pos_res_intent(self, message):
         # Handle Positive Respones
         # Make Robot Smile
+        self.speak_dialog("test")
         pass
 
     @intent_handler(IntentBuilder("").require("Bad"))
     def handle_neg_res_intent(self, message):
         # Handle Help Call
         # Make Robot Sad 
+        self.speak_dialog("test")
         pass
 
     def say_Good_Morning(self):
