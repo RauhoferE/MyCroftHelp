@@ -39,7 +39,7 @@ class Helperbot(MycroftSkill):
         # Handle Help Call
         # Make Robot Sad 
         mood = message.data.get('badMood')
-        if mood != None:
+        if mood is not None:
             self.speak_dialog("sorry", data={"mood": mood})
         else:
             self.speak_dialog("test")
