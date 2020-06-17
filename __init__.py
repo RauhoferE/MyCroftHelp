@@ -39,7 +39,8 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_Photo_intent(self,message):
         self.speak_dialog("photoYes")
-        schedule.cancel_job(self.photoJob)
+        if self.photoJob != None:
+            schedule.cancel_job(self.photoJob)        
         # Take picture here
 
     @intent_handler(IntentBuilder('NoPhotoIntent').require("No").
