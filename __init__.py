@@ -7,12 +7,11 @@ from mycroft.skills.context import adds_context, removes_context
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
-        #Calls function every day at 8 am
-        self.set_date_times()
-        
     
     def initialize(self):
-        self.register_entity_file('badMood.entity')
+        #self.register_entity_file('badMood.entity')
+        self.set_date_times()
+        #Calls function every day at 8 am
         self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100.0)
         self.schedule_repeating_event(self.say_Good_Night, self.evening, 100.0)
 
