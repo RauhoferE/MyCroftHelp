@@ -39,6 +39,11 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_Photo_intent(self,message):
         self.speak_dialog("photoYes")
+        try:
+            self.photoJob
+        except NameError:
+            self.photoJob = None
+            
         if self.photoJob != None:
             schedule.cancel_job(self.photoJob)        
         # Take picture here
@@ -48,7 +53,7 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_no_Photo_intent(self,message):
         self.speak_dialog("photoNo")
-        self.photoJob = schedule.every(10).do(self.take_Photo)
+        self.photoJob = schedule.every(10).minutes.do(self.take_Photo)
 
 
     @intent_file_handler("Good.intent")
