@@ -9,8 +9,8 @@ class Helperbot(MycroftSkill):
         MycroftSkill.__init__(self)
         #Calls function every day at 8 am
         self.set_date_times()
-        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400)
-        self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400)
+        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100)
+        self.schedule_repeating_event(self.say_Good_Night, self.evening, 100)
     
     def initialize(self):
         self.register_entity_file('badMood.entity')
