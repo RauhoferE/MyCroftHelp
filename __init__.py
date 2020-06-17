@@ -2,13 +2,6 @@ import datetime
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
-#Kill Me
-from mycroft.util.parse import extract_datetime, normalize
-from mycroft.util.time import now_local
-from mycroft.util.format import nice_time, nice_date
-from mycroft.util.log import LOG
-from mycroft.util import play_wav
-from mycroft.messagebus.client import MessageBusClient
 
 #TODO: Die Schedule Threads funktionieren nicht
 class Helperbot(MycroftSkill):
@@ -16,11 +9,12 @@ class Helperbot(MycroftSkill):
         MycroftSkill.__init__(self)
         #Calls function every day at 8 am
         self.set_date_times()
-        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100.0)
-        self.schedule_repeating_event(self.say_Good_Night, self.evening, 100.0)
+        
     
     def initialize(self):
         self.register_entity_file('badMood.entity')
+        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100.0)
+        self.schedule_repeating_event(self.say_Good_Night, self.evening, 100.0)
 
     @intent_file_handler('Help.intent')
     @adds_context('HelpContext')
@@ -40,7 +34,7 @@ class Helperbot(MycroftSkill):
     def handle_no_help(self, message):
         self.speak_dialog('helpNo')
 
-    #@adds_context('FeelContext')
+    @adds_context('FeelContext')
     def say_Good_Morning(self):
         self.speak_dialog("hello")
         self.speak_dialog("howAreYou")
