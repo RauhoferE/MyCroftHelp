@@ -41,7 +41,7 @@ class Helperbot(MycroftSkill):
     @intent_file_handler("AskMe.intent")
     @adds_context('FeelContext')
     def ask_me(self):
-        self.speak_dialog("howAreYou")
+        self.speak_dialog("howAreYou", expect_response="good")
 
     def say_Good_Night(self):
         self.speak_dialog("goodNight")
