@@ -6,6 +6,7 @@ from mycroft.skills.context import adds_context, removes_context
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
+        self.photoJob = None
         #Calls function every day at 8 am
         schedule.every().day.at("08:00").do(self.say_Good_Morning)
         # Calls function every day at 8 pm
@@ -32,6 +33,7 @@ class Helperbot(MycroftSkill):
 
     @adds_context('PhotoContext')
     def take_Photo(self):
+        self.photoJob = None
         self.speak_dialog("photo", expect_response=True)
     
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
@@ -39,11 +41,6 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_Photo_intent(self,message):
         self.speak_dialog("photoYes")
-        try:
-            self.photoJob
-        except NameError:
-            self.photoJob = None
-            
         if self.photoJob != None:
             schedule.cancel_job(self.photoJob)        
         # Take picture here
