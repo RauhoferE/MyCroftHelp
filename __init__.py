@@ -12,8 +12,8 @@ class Helperbot(MycroftSkill):
         #self.register_entity_file('badMood.entity')
         self.set_date_times()
         #Calls function every day at 8 am
-        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100.0)
-        self.schedule_repeating_event(self.say_Good_Night, self.evening, 100.0)
+        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
+        self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400.0)
 
     @intent_file_handler('Help.intent')
     @adds_context('HelpContext')
@@ -69,10 +69,10 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_no_Photo_intent(self,message):
         self.speak_dialog("photoNo")
-        self.schedule_event(self.take_Photo, datetime.datetime.now(), 60.0)
+        self.schedule_event(self.take_Photo, self.set_date_time_in(1))
 
 
-    @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Bad").
+    @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
                                   require('FeelContext').build())
     @removes_context('FeelContext')
     def handle_pos_res_intent(self, message):
@@ -81,20 +81,13 @@ class Helperbot(MycroftSkill):
         self.speak_dialog("goodMoodD")
         
 
-    @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Good").
+    @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Bad").
                                   require('FeelContext').build())
     @removes_context('FeelContext')
     def handle_neg_res_intent(self, message):
-        # Handle Help Call
+        # Handle negative response
         # Make Robot Sad 
         self.speak_dialog("badMoodD")
-
-    @intent_handler(IntentBuilder("").require("Test").require("Adapt"))
-    def handle_hello_world_intent(self, message):
-        # In this case, respond by simply speaking a canned response.
-        # Mycroft will randomly speak one of the lines from the file
-        #    dialogs/en-us/hello.world.dialog
-        self.speak_dialog("test")
     
     def set_date_times(self):
         dNow = datetime.datetime.now()
@@ -113,6 +106,10 @@ class Helperbot(MycroftSkill):
         else:
             self.evening = dNow2.replace(hour=20,minute=0,second=0)
         pass
+
+    def set_date_time_in(self,number):
+        dNow = datetime.datetime.now()
+        return dNow.replace(minute=number)
 
 def create_skill():
     return Helperbot()
