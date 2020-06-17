@@ -8,8 +8,9 @@ class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
         #Calls function every day at 8 am
-        self.schedule_repeating_event(self.say_Good_Morning, datetime.time(8), 86400)
-        self.schedule_repeating_event(self.say_Good_Night, datetime.time(20), 86400)
+        self.set_date_times()
+        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400)
+        self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400)
     
     def initialize(self):
         self.register_entity_file('badMood.entity')
@@ -89,6 +90,24 @@ class Helperbot(MycroftSkill):
         # Mycroft will randomly speak one of the lines from the file
         #    dialogs/en-us/hello.world.dialog
         self.speak_dialog("test")
+    
+    def set_date_times(self):
+        dNow = datetime.datetime.now()
+        if dNow.hour > 8:
+            newDay = dNow.today().day + 1
+            self.morning = dNow.replace(day=newDay, hour=8,minute=0,second=0)
+            pass
+        else:
+            self.morning = dNow.replace(hour=8,minute=0,second=0)
+            pass
+        dNow2 = datetime.datetime.now()
+        if dNow2.hour > 20:
+            newDay = dNow2.today().day + 1
+            self.evening = dNow2.replace(day=newDay, hour=20,minute=0,second=0)
+            pass
+        else:
+            self.evening = dNow2.replace(hour=20,minute=0,second=0)
+        pass
 
 def create_skill():
     return Helperbot()
