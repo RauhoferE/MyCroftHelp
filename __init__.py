@@ -8,6 +8,9 @@ class Helperbot(MycroftSkill):
         MycroftSkill.__init__(self)
     
     def initialize(self):
+        # TODO: In eine Settings File schreiben
+        self.remindUserMorning = True
+        self.remindUserEvening = True
         self.set_date_times()
         #Calls function every day at 8 am
         self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
@@ -39,7 +42,7 @@ class Helperbot(MycroftSkill):
     @adds_context('FeelContext')
     def say_Good_Morning(self):
         self.speak_dialog("hello")
-        self.speak_dialog("howAreYou")
+        self.speak_dialog("howAreYou", expect_response="good")
 
     # This function is called if the eprson wants the robot to ask him how he feels - TEST
     @intent_file_handler("AskMe.intent")
@@ -50,6 +53,9 @@ class Helperbot(MycroftSkill):
     # This function should be called in the night
     def say_Good_Night(self):
         self.speak_dialog("goodNight")
+        if self.remindUserEvening:
+            self.take_Photo()
+        
 
     # This function should be called if the person wants his photo taken - TEST
     @intent_file_handler("TakeMyPhoto.intent")
@@ -78,7 +84,17 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_no_Photo_intent(self,message):
         self.speak_dialog("photoNo")
-        self.schedule_event(self.take_Photo, self.set_date_time_in(1))
+        self.schedule_event(self.take_Photo, self.set_date_time_in(10))
+
+    # This function is called if the user disagrees to ever taking a photo
+    @intent_handler(IntentBuilder('NoPhotoIntent').require("Never").
+                                  require('PhotoContext').build())
+    @removes_context('PhotoContext')
+    def handle_never_Photo_intent(self,message):
+        self.speak_dialog("stopAsking")
+        self.remindUserMorning = False
+        self.remindUserEvening = False
+
 
     # This function is called if the user has a good mood.
     @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
@@ -88,6 +104,9 @@ class Helperbot(MycroftSkill):
         # Handle Positive Respones
         # TODO: Make Robot Smile
         self.speak_dialog("goodMoodD")
+        if self.remindUserMorning:
+            self.take_Photo()
+        
         
     # This function is called if the user has a bad mood.
     @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Bad").
@@ -97,7 +116,37 @@ class Helperbot(MycroftSkill):
         # Handle negative response
         # TODO: Make Robot Sad 
         self.speak_dialog("badMoodD")
+        if self.remindUserMorning:
+            self.take_Photo()
+
+    # This function is called when the user doesnt want to be reminded this morning or evening.
+    # TODO: Theses probably need some work
+    @intent_file_handler('DontRemind.intent')
+    def handle_picture_remind(self, message):
+        dayT = message.data.get('day')
+        self.speak_dialog("stopReminding", data={"dayT": dayT})
+        if dayT == "morning":
+            self.remindUserMorning = False
+            self.schedule_event(self.activate_morning_reminder, self.set_datetime_for_tomorrow(7))
+            pass
+        else:
+            self.remindUserEvening = False
+            self.schedule_event(self.activate_evening_reminder, self.set_datetime_for_tomorrow(19))
+            pass
     
+    # This function is called when the user doesnt want to be reminded every morning or evening.
+    @intent_file_handler('NeverRemind.intent')
+    def handle_never_picture_remind(self, message):
+        dayT = message.data.get('day')
+        self.speak_dialog("neverRemind", data={"dayT": dayT})
+        if dayT == "morning":
+            self.remindUserMorning = False
+            pass
+        else:
+            self.remindUserEvening = False
+            pass
+
+
     # Sets the datetime for the next 8am and the 8pm
     def set_date_times(self):
         dNow = datetime.datetime.now()
@@ -122,6 +171,21 @@ class Helperbot(MycroftSkill):
         dNow = datetime.datetime.now()
         newMin = dNow.today().minute + number
         return dNow.replace(minute=newMin, second=0)
+
+    # Activates the morning reminders
+    def activate_morning_reminder(self):
+        self.remindUserMorning = True
+
+    # Activates the evening reminders
+    def activate_evening_reminder(self):
+        self.remindUserEvening = True
+
+    # Returns a datetime with tommorows date at hour1 o'clock
+    # TODO: Test for bugs
+    def set_datetime_for_tomorrow(self, hour1):
+        dt = datetime.datetime.now()
+        tommorrow = dt.today().day + 1
+        return dt.replace(day=tommorrow, hour=hour1)
 
 def create_skill():
     return Helperbot()
