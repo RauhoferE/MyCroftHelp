@@ -109,8 +109,8 @@ class Helperbot(MycroftSkill):
 
     def set_date_time_in(self,number):
         dNow = datetime.datetime.now()
-        newMin = dNow.minute() + number
-        return dNow.replace(minute=newMin)
+        newMin = dNow.today().minute + number
+        return dNow.replace(minute=newMin, second=0)
 
 def create_skill():
     return Helperbot()
