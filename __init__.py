@@ -1,5 +1,6 @@
 import schedule
-from mycroft import MycroftSkill, intent_file_handler
+from adapt.intent import IntentBuilder
+from mycroft import MycroftSkill, intent_file_handler, intent_handler
 
 
 class Helperbot(MycroftSkill):
@@ -15,7 +16,7 @@ class Helperbot(MycroftSkill):
 
     @intent_file_handler('Help.intent')
     def handle_helperbot(self, message):
-        self.speak_dialog('help')
+        self.speak_dialog('doYouNeedHelp')
 
     def say_Good_Morning(self):
         self.speak_dialog("hello")
@@ -42,6 +43,13 @@ class Helperbot(MycroftSkill):
             self.speak_dialog("sorry", data={"mood": mood})
         else:
             self.speak_dialog("badMoodD")
+
+    @intent_handler(IntentBuilder("").require("Test").require("Adapt"))
+    def handle_hello_world_intent(self, message):
+        # In this case, respond by simply speaking a canned response.
+        # Mycroft will randomly speak one of the lines from the file
+        #    dialogs/en-us/hello.world.dialog
+        self.speak_dialog("test")
 
 def create_skill():
     return Helperbot()
