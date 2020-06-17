@@ -40,7 +40,7 @@ class Helperbot(MycroftSkill):
     def handle_no_help(self, message):
         self.speak_dialog('helpNo')
 
-    @adds_context('FeelContext')
+    #@adds_context('FeelContext')
     def say_Good_Morning(self):
         self.speak_dialog("hello")
         self.speak_dialog("howAreYou")
