@@ -9,8 +9,8 @@ class Helperbot(MycroftSkill):
         MycroftSkill.__init__(self)
         #Calls function every day at 8 am
         self.set_date_times()
-        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100)
-        self.schedule_repeating_event(self.say_Good_Night, self.evening, 100)
+        #self.schedule_repeating_event(self.say_Good_Morning, self.morning, 100)
+        #self.schedule_repeating_event(self.say_Good_Night, self.evening, 100)
     
     def initialize(self):
         self.register_entity_file('badMood.entity')
@@ -64,7 +64,7 @@ class Helperbot(MycroftSkill):
     @removes_context('PhotoContext')
     def handle_no_Photo_intent(self,message):
         self.speak_dialog("photoNo")
-        self.schedule_event(self.take_Photo, datetime.datetime.now(), 60)
+        #self.schedule_event(self.take_Photo, datetime.datetime.now(), 60)
 
 
     @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Bad").
