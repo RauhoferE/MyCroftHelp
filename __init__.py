@@ -121,6 +121,7 @@ class Helperbot(MycroftSkill):
 
     # This function is called when the user doesnt want to be reminded this morning or evening.
     # TODO: Theses probably need some work
+    # This function will activate the reminder again tomorrow 1 hour before the normal reminders start
     @intent_file_handler('DontRemind.intent')
     def handle_picture_remind(self, message):
         dayT = message.data.get('day')
@@ -151,16 +152,16 @@ class Helperbot(MycroftSkill):
     def set_date_times(self):
         dNow = datetime.datetime.now()
         if dNow.hour > 8:
-            newDay = dNow.today().day + 1
-            self.morning = dNow.replace(day=newDay, hour=8,minute=0,second=0)
+            newDay = dNow + datetime.timedelta(days=1)
+            self.morning = newDay.replace(hour=8,minute=0,second=0)
             pass
         else:
             self.morning = dNow.replace(hour=8,minute=0,second=0)
             pass
         dNow2 = datetime.datetime.now()
         if dNow2.hour > 20:
-            newDay = dNow2.today().day + 1
-            self.evening = dNow2.replace(day=newDay, hour=20,minute=0,second=0)
+            newDay = dNow2.today().day + datetime.timedelta(days=1)
+            self.evening = newDay.replace(hour=20,minute=0,second=0)
             pass
         else:
             self.evening = dNow2.replace(hour=20,minute=0,second=0)
@@ -168,9 +169,9 @@ class Helperbot(MycroftSkill):
     
     # Sets the datetime for number minutes 
     def set_date_time_in(self,number):
-        dNow = datetime.datetime.now()
-        newMin = dNow.today().minute + number
-        return dNow.replace(minute=newMin, second=0)
+        dNow = datetime.datetime.now() + datetime.timedelta(minutes=1)
+        #newMin = dNow.today().minute + number
+        return dNow
 
     # Activates the morning reminders
     def activate_morning_reminder(self):
@@ -181,11 +182,10 @@ class Helperbot(MycroftSkill):
         self.remindUserEvening = True
 
     # Returns a datetime with tommorows date at hour1 o'clock
-    # TODO: Test for bugs
     def set_datetime_for_tomorrow(self, hour1):
         dt = datetime.datetime.now()
-        tommorrow = dt.today().day + 1
-        return dt.replace(day=tommorrow, hour=hour1)
+        tommorrow = dt + datetime.timedelta(days=1)
+        return tommorrow.replace(hour=hour1)
 
 def create_skill():
     return Helperbot()
