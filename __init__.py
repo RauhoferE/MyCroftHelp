@@ -1,8 +1,10 @@
 import schedule
+import threading
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
 
+#TODO: Die Schedule Threads funktionieren nicht
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
