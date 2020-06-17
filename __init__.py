@@ -1,7 +1,7 @@
 import schedule
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
-
+from mycroft.skills.context import adds_context, removes_context
 
 class Helperbot(MycroftSkill):
     def __init__(self):
@@ -18,13 +18,36 @@ class Helperbot(MycroftSkill):
     def handle_helperbot(self, message):
         self.speak_dialog('doYouNeedHelp')
 
+    
     def say_Good_Morning(self):
         self.speak_dialog("hello")
-        self.speak_dialog("howAreYou")
+        #self.speak_dialog("howAreYou",excpect_response=True)
 
     def say_Good_Night(self):
         self.speak_dialog("goodNight")
-        # Here comes the photo part
+
+    @intent_file_handler("TakeMyPhoto.intent")
+    def take_Photo_manually(self,message):
+        self.take_Photo()
+
+    @adds_context('PhotoContext')
+    def take_Photo(self):
+        self.speak_dialog("photo", expect_response=True)
+    
+    @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
+                                  require('PhotoContext').build())
+    @removes_context('PhotoContext')
+    def handle_Photo_intent(self,message):
+        self.speak_dialog("photoYes")
+        schedule.cancel_job(self.photoJob)
+        # Take picture here
+
+    @intent_handler(IntentBuilder('NoPhotoIntent').require("No").
+                                  require('PhotoContext').build())
+    @removes_context('PhotoContext')
+    def handle_no_Photo_intent(self,message):
+        self.speak_dialog("photoNo")
+        self.photoJob = schedule.every(10).do(self.take_Photo)
 
 
     @intent_file_handler("Good.intent")
