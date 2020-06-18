@@ -1,6 +1,8 @@
 import datetime
 import yagmail
 import threading
+import cv2
+import yaml
 from mycroft.audio import wait_while_speaking
 from mycroft.util import record, play_wav
 from adapt.intent import IntentBuilder
@@ -20,6 +22,7 @@ class Helperbot(MycroftSkill):
         self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
         #Calls function every day at 8 pm
         self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400.0)
+        self.config = yaml.safe_load(open("/opt/qbo/config.yml"))
 
     # This function asks the person if he needs any assistance.
     @intent_file_handler('Help.intent')
@@ -71,6 +74,7 @@ class Helperbot(MycroftSkill):
     @adds_context('PhotoContext')
     def take_Photo(self):
         self.speak_dialog("photo", expect_response=True)
+        self.makepicture()
     
     # This function is called if the user agrees to taking his photo
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
@@ -216,6 +220,19 @@ class Helperbot(MycroftSkill):
             return True
         except:
             return False
+
+    def makepicture(self):
+        cam = cv2.cv2.VideoCapture(int(self.config['camera']))
+        # 3 =  Enum for Picture Width
+        cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 320)  # I have found this to be about the highest-
+        cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 240)
+
+        if cam.isOpened():
+            _, frame = cam.read()
+            now = datetime.datetime.now()
+            file_name = now.strftime("%m_%d_%Y.%H_%M_%S") + ".jpg"
+            cam.release()
+            cv2.cv2.imwrite(file_name, frame)
 
 
 def create_skill():
