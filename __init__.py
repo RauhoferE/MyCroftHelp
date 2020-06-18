@@ -1,6 +1,7 @@
 import datetime
 import sounddevice as sd
 from scipy.io.wavfile import write
+from mycroft.audio import wait_while_speaking
 from mycroft.util import record, play_wav
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
