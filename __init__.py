@@ -75,7 +75,7 @@ class Helperbot(MycroftSkill):
     @adds_context('PhotoContext')
     def take_Photo(self):
         self.speak_dialog("photo", expect_response=True)
-        self.makepicture()
+        #self.makepicture()
     
     # This function is called if the user agrees to taking his photo
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
