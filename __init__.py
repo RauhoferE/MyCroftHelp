@@ -1,4 +1,5 @@
 import datetime
+import recordMP3
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
@@ -28,9 +29,10 @@ class Helperbot(MycroftSkill):
                                   require('HelpContext').build())
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
-        self.speak_dialog('help')
+        self.speak_dialog('speakMessage')
+        recordMP3.RecordMe()
         # TODO: Get Help
-
+    
     # This function is called if the person disagreed for help
     @intent_handler(IntentBuilder('NoHelpIntent').require("No").
                                   require('HelpContext').build())
