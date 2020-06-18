@@ -1,5 +1,6 @@
 import datetime
 import yagmail
+import threading
 from mycroft.audio import wait_while_speaking
 from mycroft.util import record, play_wav
 from adapt.intent import IntentBuilder
@@ -33,8 +34,8 @@ class Helperbot(MycroftSkill):
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
         self.RecordMes()
-        self.schedule_event(self.SendMail,datetime.datetime.now())
-        #self.SendMail()
+        r = threading.Thread(target=self.SendMail)
+        r.start()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
