@@ -36,7 +36,8 @@ class Helperbot(MycroftSkill):
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
-        self.RecordMes()
+        #self.RecordMes() TODO: Recording sounds horrible
+        self.SendMail() # TODO: It only sends the first 22 kb of the file, but I dont know why
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -199,18 +200,15 @@ class Helperbot(MycroftSkill):
     def RecordMes(self):
         wait_while_speaking()
         record("/tmp/mycroft-recording.wav", 30, 44100, 2)
-        self.SendMail()
+        
 
-    def SendMail(self,emailHost="smtp.gmail.com", emailPort=465, 
-    senderEmailAdress="helperbotdevacc@gmail.com", receivers= ["104609@fhwn.ac.at"],
-     appPassword="shevsscfesztaddu"):
+    def SendMail(self,emailHost="smtp.gmail.com", emailPort=465, senderEmailAdress="helperbotdevacc@gmail.com", receivers= ["104609@fhwn.ac.at"], appPassword="shevsscfesztaddu"):
         # In der finalen version lässt sich der email provider einstellen
         # In der finalen version lässt sich Username und Passwort einstellen
         subject = "Help me"
         message = [
             "I have fallen and I cant get back up",
             "Please help me!",
-            "/tmp/mycroft-recording.wav"
         ]
         try:
             with yagmail.SMTP(senderEmailAdress, appPassword) as yag:
