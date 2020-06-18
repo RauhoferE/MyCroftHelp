@@ -31,7 +31,7 @@ class Helperbot(MycroftSkill):
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
-        RecordMe.RecordMessage()
+        self.RecordMessage()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -190,16 +190,12 @@ class Helperbot(MycroftSkill):
         tommorrow = dt + datetime.timedelta(days=1)
         return tommorrow.replace(hour=hour1)
 
-def create_skill():
-    return Helperbot()
-
-
-class RecordMe:
-    @staticmethod
-    def RecordMessage(duration=30):
+    def RecordMessage(self,duration=30):
         fs = 44100  # Sample rate
         myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
         sd.wait()  # Wait until recording is finished
         write('message.wav', fs, myrecording)  # Save as WAV file 
-        pass
-    pass
+        self.log.debug("File Created")
+        
+def create_skill():
+    return Helperbot()
