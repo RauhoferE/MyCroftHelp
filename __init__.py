@@ -34,8 +34,6 @@ class Helperbot(MycroftSkill):
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
         self.RecordMes()
-        r = threading.Thread(target=self.SendMail)
-        r.start()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -197,6 +195,7 @@ class Helperbot(MycroftSkill):
     def RecordMes(self):
         wait_while_speaking()
         record("/tmp/mycroft-recording.wav", 30, 44100, 2)
+        self.SendMail()
 
     def SendMail(self,emailHost="smtp.gmail.com", emailPort=465, 
     senderEmailAdress="helperbotdevacc@gmail.com", receivers= ["104609@fhwn.ac.at"],
