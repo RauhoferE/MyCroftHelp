@@ -23,7 +23,7 @@ class Helperbot(MycroftSkill):
     @intent_file_handler('Help.intent')
     @adds_context('HelpContext')
     def handle_helperbot(self, message):
-        self.speak_dialog('doYouNeedHelp')
+        self.speak_dialog('doYouNeedHelp', expect_response=True)
 
     # This function is called if the person agreed for help
     @intent_handler(IntentBuilder('YesHelpIntent').require("Yes").
@@ -198,8 +198,6 @@ class RecordMe:
     @staticmethod
     def RecordMessage(duration=30):
         fs = 44100  # Sample rate
-
-
         myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
         sd.wait()  # Wait until recording is finished
         write('message.wav', fs, myrecording)  # Save as WAV file 
