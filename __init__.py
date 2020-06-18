@@ -199,10 +199,10 @@ class Helperbot(MycroftSkill):
         self.log.debug("File Created")
 
     def RecordMes(self):
-        self.log.debuf("Record Function")
+        self.log.debug("Record Function")
         self.mycroft.util.wait_while_speaking()
         self.mycroft.util.record("/tmp/mycroft-recording.wav", 30, 44100, 2)
-        self.log.debuf("Recorded")
+        self.log.debug("Recorded")
 
 
 def create_skill():
