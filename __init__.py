@@ -13,7 +13,7 @@ class Helperbot(MycroftSkill):
         self.remindUserEvening = True
         self.set_date_times()
         #Calls function every day at 8 am
-        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
+        self.test = self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
         #Calls function every day at 8 pm
         self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400.0)
 
@@ -42,13 +42,13 @@ class Helperbot(MycroftSkill):
     @adds_context('FeelContext')
     def say_Good_Morning(self):
         self.speak_dialog("hello")
-        self.speak_dialog("howAreYou", expect_response="good")
+        self.speak_dialog("howAreYou", expect_response=True)
 
     # This function is called if the eprson wants the robot to ask him how he feels - TEST
     @intent_file_handler("AskMe.intent")
     @adds_context('FeelContext')
     def ask_me(self):
-        self.speak_dialog("howAreYou", expect_response="good")
+        self.speak_dialog("howAreYou", expect_response=True)
 
     # This function should be called in the night
     def say_Good_Night(self):
@@ -87,13 +87,13 @@ class Helperbot(MycroftSkill):
         self.schedule_event(self.take_Photo, self.set_date_time_in(10))
 
     # This function is called if the user disagrees to ever taking a photo
-    @intent_handler(IntentBuilder('NoPhotoIntent').require("Never").
-                                  require('PhotoContext').build())
-    @removes_context('PhotoContext')
-    def handle_never_Photo_intent(self,message):
-        self.speak_dialog("stopAsking")
-        self.remindUserMorning = False
-        self.remindUserEvening = False
+    # @intent_handler(IntentBuilder('NoPhotoIntent').require("Never").
+    #                               require('PhotoContext').build())
+    # @removes_context('PhotoContext')
+    # def handle_never_Photo_intent(self,message):
+    #     self.speak_dialog("stopAsking")
+    #     self.remindUserMorning = False
+    #     self.remindUserEvening = False
 
 
     # This function is called if the user has a good mood.
@@ -136,16 +136,16 @@ class Helperbot(MycroftSkill):
             pass
     
     # This function is called when the user doesnt want to be reminded every morning or evening.
-    @intent_file_handler('NeverRemind.intent')
-    def handle_never_picture_remind(self, message):
-        dayT = message.data.get('day')
-        self.speak_dialog("neverRemind", data={"dayT": dayT})
-        if dayT == "morning":
-            self.remindUserMorning = False
-            pass
-        else:
-            self.remindUserEvening = False
-            pass
+    # @intent_file_handler('NeverRemind.intent')
+    # def handle_never_picture_remind(self, message):
+    #     dayT = message.data.get('day')
+    #     self.speak_dialog("neverRemind", data={"dayT": dayT})
+    #     if dayT == "morning":
+    #         self.remindUserMorning = False
+    #         pass
+    #     else:
+    #         self.remindUserEvening = False
+    #         pass
 
 
     # Sets the datetime for the next 8am and the 8pm
