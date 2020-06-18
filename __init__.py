@@ -1,6 +1,7 @@
 import datetime
 import sounddevice as sd
 from scipy.io.wavfile import write
+import thread
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
@@ -31,7 +32,7 @@ class Helperbot(MycroftSkill):
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
-        self.RecordMessage()
+        thread.start_new_thread( self.RecordMessage)
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -196,6 +197,6 @@ class Helperbot(MycroftSkill):
         sd.wait()  # Wait until recording is finished
         write('message.wav', fs, myrecording)  # Save as WAV file 
         self.log.debug("File Created")
-        
+
 def create_skill():
     return Helperbot()
