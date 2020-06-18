@@ -201,6 +201,7 @@ class Helperbot(MycroftSkill):
     def RecordMes(self):
         self.util.wait_while_speaking()
         self.util.record("message.wav", 30, 44100, 2)
+        self.log.debuf("Recorded")
 
 
 def create_skill():
