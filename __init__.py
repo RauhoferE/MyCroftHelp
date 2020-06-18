@@ -1,6 +1,5 @@
 import datetime
-import sounddevice as sd
-from scipy.io.wavfile import write
+import yagmail
 from mycroft.audio import wait_while_speaking
 from mycroft.util import record, play_wav
 from adapt.intent import IntentBuilder
@@ -34,6 +33,7 @@ class Helperbot(MycroftSkill):
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
         self.RecordMes()
+        self.SendMail()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -192,18 +192,29 @@ class Helperbot(MycroftSkill):
         tommorrow = dt + datetime.timedelta(days=1)
         return tommorrow.replace(hour=hour1)
 
-    def RecordMessage(self,duration=30):
-        fs = 44100  # Sample rate
-        myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=2)
-        sd.wait()  # Wait until recording is finished
-        write('message.wav', fs, myrecording)  # Save as WAV file 
-        self.log.debug("File Created")
-
     def RecordMes(self):
-        self.log.debug("Record Function")
         wait_while_speaking()
         record("/tmp/mycroft-recording.wav", 30, 44100, 2)
-        self.log.debug("Recorded")
+
+    def SendMail(self,emailHost="smtp.gmail.com", emailPort=465, 
+    senderEmailAdress="helperbotdevacc@gmail.com", receivers= ["104609@fhwn.ac.at"],
+     appPassword="shevsscfesztaddu"):
+        # In der finalen version lässt sich der email provider einstellen
+        # In der finalen version lässt sich Username und Passwort einstellen
+        subject = "Help me"
+        message = [
+            "I have fallen and I cant get back up",
+            "Please help me!",
+            "/tmp/mycroft-recording.wav"
+        ]
+        try:
+            with yagmail.SMTP(senderEmailAdress, appPassword) as yag:
+                for receiver in receivers:
+                    yag.send(receiver, subject, message) 
+                pass
+            return True
+        except:
+            return False
 
 
 def create_skill():
