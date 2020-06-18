@@ -22,7 +22,7 @@ class Helperbot(MycroftSkill):
         self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
         #Calls function every day at 8 pm
         self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400.0)
-        self.config = yaml.safe_load(open("/opt/qbo/config.yml"))
+        #self.config = yaml.safe_load(open("/opt/qbo/config.yml")) TODO: Maybe config file
 
     # This function asks the person if he needs any assistance.
     @intent_file_handler('Help.intent')
