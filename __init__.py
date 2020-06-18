@@ -33,7 +33,8 @@ class Helperbot(MycroftSkill):
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
         self.RecordMes()
-        self.SendMail()
+        self.schedule_event(self.SendMail,datetime.datetime.now())
+        #self.SendMail()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
