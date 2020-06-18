@@ -32,7 +32,7 @@ class Helperbot(MycroftSkill):
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
-        self.RecordMes
+        self.RecordMes()
         # TODO: Get Help
     
     # This function is called if the person disagreed for help
@@ -199,7 +199,7 @@ class Helperbot(MycroftSkill):
         self.log.debug("File Created")
 
     def RecordMes(self):
-        #self.util.wait_while_speaking()
+        self.util.wait_while_speaking()
         self.util.record("/tmp/mycroft-recording.wav", 30, 44100, 2)
         self.log.debuf("Recorded")
 
