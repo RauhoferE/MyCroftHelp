@@ -1,3 +1,4 @@
 adapt-parser
 sounddevice
 scipy
+thread
