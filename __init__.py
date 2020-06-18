@@ -13,7 +13,7 @@ class Helperbot(MycroftSkill):
         self.remindUserEvening = True
         self.set_date_times()
         #Calls function every day at 8 am
-        self.test = self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
+        self.schedule_repeating_event(self.say_Good_Morning, self.morning, 86400.0)
         #Calls function every day at 8 pm
         self.schedule_repeating_event(self.say_Good_Night, self.evening, 86400.0)
 
