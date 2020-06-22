@@ -2,3 +2,4 @@ adapt-parser
 yagmail
 opencv-python
 pyyaml
+twilio

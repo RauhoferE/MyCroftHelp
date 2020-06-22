@@ -3,12 +3,14 @@ import yagmail
 import threading
 import cv2
 import yaml
+from twilio.rest import Client
 from mycroft.audio import wait_while_speaking
 from mycroft.util import record, play_wav
 from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
 
+# The skill class
 class Helperbot(MycroftSkill):
     def __init__(self):
         MycroftSkill.__init__(self)
@@ -27,7 +29,6 @@ class Helperbot(MycroftSkill):
         except:
             pass
         
-
     # This function asks the person if he needs any assistance.
     @intent_file_handler('Help.intent')
     @adds_context('HelpContext')
@@ -40,9 +41,9 @@ class Helperbot(MycroftSkill):
     @removes_context('HelpContext')
     def handle_yes_help(self, message):
         self.speak_dialog('speakMessage')
-        #self.RecordMes() TODO: Recording sounds horrible
-        self.SendMail() # TODO: It only sends the first 22 kb of the file, but I dont know why
-        # TODO: Get Help
+        self.RecordMes() 
+        self.SendMail()
+        self.sendSMS("Please send help I have fallen!", ["+436642375066"])
     
     # This function is called if the person disagreed for help
     @intent_handler(IntentBuilder('NoHelpIntent').require("No").
@@ -201,11 +202,13 @@ class Helperbot(MycroftSkill):
         tommorrow = dt + datetime.timedelta(days=1)
         return tommorrow.replace(hour=hour1)
 
+    # Here a message is recored that is to be sent to the caregiver.
     def RecordMes(self):
-        wait_while_speaking()
-        record("/tmp/mycroft-recording.wav", 30, 44100, 2)
+        # wait_while_speaking()
+        # record("/tmp/mycroft-recording.wav", 30, 44100, 2)
+        pass
         
-
+    # Here the help-mail is send to the list of receivers.
     def SendMail(self,emailHost="smtp.gmail.com", emailPort=465, senderEmailAdress="helperbotdevacc@gmail.com", receivers= ["104609@fhwn.ac.at"], appPassword="shevsscfesztaddu"):
         # In der finalen version lässt sich der email provider einstellen
         # In der finalen version lässt sich Username und Passwort einstellen
@@ -223,19 +226,34 @@ class Helperbot(MycroftSkill):
         except:
             return False
 
+    # Here the picture is taken.
     def makepicture(self):
-        cam = cv2.cv2.VideoCapture(int(self.config['camera']))
-        # 3 =  Enum for Picture Width
-        cam.set(cv2.cv2.CV_CAP_PROP_FRAME_WIDTH, 320)  # I have found this to be about the highest-
-        cam.set(cv2.cv2.CV_CAP_PROP_FRAME_HEIGHT, 240)
-        path = "/tmp/"
-        if cam.isOpened():
-            _, frame = cam.read()
-            now = datetime.datetime.now()
-            file_name = path + now.strftime("%m_%d_%Y.%H_%M_%S") + ".jpg"
-            cam.release()
-            cv2.cv2.imwrite(file_name, frame)
+        # cam = cv2.cv2.cV.VideoCapture(int(self.config['camera']))
+        # # 3 =  Enum for Picture Width
+        # cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 320)  # I have found this to be about the highest-
+        # cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 240)
+        # path = "/tmp/"
+        # if cam.isOpened():
+        #     _, frame = cam.read()
+        #     now = datetime.datetime.now()
+        #     file_name = path + now.strftime("%m_%d_%Y.%H_%M_%S") + ".jpg"
+        #     cam.release()
+        #     cv2.cv2.cv.imwrite(file_name, frame)
+        pass
+    
+    def sendSMS(self,message,numbers):
+            # the following line needs your Twilio Account SID and Auth Token
+        client = Client("AC3aede748210f547a02e9d406efcadcbb", "31ae8c13f7a19e960e14369a8177417f")
 
+    # change the "from_" number to your Twilio number and the "to" number
+    # to the phone number you signed up for Twilio with, or upgrade your
+    # account to send SMS to any phone number
+        for number in numbers:
+            client.messages.create(to=number, 
+                        from_="+12029913651", 
+                        body=message)
+            pass
 
+# Here the skill is created
 def create_skill():
     return Helperbot()
