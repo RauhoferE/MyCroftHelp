@@ -224,17 +224,17 @@ class Helperbot(MycroftSkill):
             return False
 
     def makepicture(self):
-        cam = cv2.cv2.VideoCapture(int(self.config['camera']))
+        cam = cv2.VideoCapture(int(self.config['camera']))
         # 3 =  Enum for Picture Width
-        cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 320)  # I have found this to be about the highest-
-        cam.set(cv2.cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 240)
+        cam.set(cv2.cv.CV_CAP_PROP_FRAME_WIDTH, 320)  # I have found this to be about the highest-
+        cam.set(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT, 240)
         path = "/tmp/"
         if cam.isOpened():
             _, frame = cam.read()
             now = datetime.datetime.now()
             file_name = path + now.strftime("%m_%d_%Y.%H_%M_%S") + ".jpg"
             cam.release()
-            cv2.cv2.imwrite(file_name, frame)
+            cv2.imwrite(file_name, frame)
 
 
 def create_skill():
