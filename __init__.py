@@ -1,7 +1,6 @@
 import datetime
 import yagmail
 import threading
-import cv2
 import yaml
 from twilio.rest import Client
 from mycroft.audio import wait_while_speaking
