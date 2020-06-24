@@ -83,7 +83,7 @@ class Helperbot(MycroftSkill):
     @adds_context('PhotoContext')
     def take_Photo(self):
         self.speak_dialog("photo", expect_response=True)
-        self.makepicture()
+        
 
         # This function is called if the user has a good mood.
     @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
@@ -95,7 +95,7 @@ class Helperbot(MycroftSkill):
         # TODO: Make Robot Smile
         self.speak_dialog("goodMoodD")
         if self.remindUserMorning:
-            self.take_Photo()
+            self.speak_dialog("photo", expect_response=True)
         
         
     # This function is called if the user has a bad mood.
@@ -108,7 +108,7 @@ class Helperbot(MycroftSkill):
         # TODO: Make Robot Sad 
         self.speak_dialog("badMoodD")
         if self.remindUserMorning:
-            self.take_Photo()
+            self.speak_dialog("photo", expect_response=True)
     
     # This function is called if the user agrees to taking his photo
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
@@ -119,7 +119,7 @@ class Helperbot(MycroftSkill):
         for i in range(10, 0, -1):
             self.speak(str(i) + " .")
         self.speak_dialog("cheese")   
-        # TODO:Take picture here
+        self.makepicture()
 
     # This function is called if the user disagrees to taking his photo
     @intent_handler(IntentBuilder('NoPhotoIntent').require("No").
@@ -252,7 +252,7 @@ class Helperbot(MycroftSkill):
     def sendSMS(self,message,numbers):
             # the following line needs your Twilio Account SID and Auth Token
         client = Client("AC3aede748210f547a02e9d406efcadcbb", 
-        "aed1fcdef064d13b76758b162796c342")
+        "375e0520966c602e7e539cb0e366c069")
     # change the "from_" number to your Twilio number and the "to" number
     # to the phone number you signed up for Twilio with, or upgrade your
     # account to send SMS to any phone number
