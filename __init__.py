@@ -250,14 +250,13 @@ class Helperbot(MycroftSkill):
     def sendSMS(self,message,numbers):
             # the following line needs your Twilio Account SID and Auth Token
         client = Client("AC3aede748210f547a02e9d406efcadcbb", 
-        "31ae8c13f7a19e960e14369a8177417f")
-        client.messages.create(to=numbers,from_="+12029913651",body=message)
+        "aed1fcdef064d13b76758b162796c342")
     # change the "from_" number to your Twilio number and the "to" number
     # to the phone number you signed up for Twilio with, or upgrade your
     # account to send SMS to any phone number
-        #for number in numbers:
-         #   client.messages.create(to=number,from_="+12029913651",body=message)
-         #   pass
+        for number in numbers:
+            client.messages.create(to=number,from_="+12029913651",body=message)
+            pass
 
 # Here the skill is created
 def create_skill():
