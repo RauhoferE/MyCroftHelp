@@ -137,7 +137,7 @@ class Helperbot(MycroftSkill):
     #     self.remindUserMorning = False
     #     self.remindUserEvening = False
 
-
+#
 
 
     # This function is called when the user doesnt want to be reminded this morning or evening.
