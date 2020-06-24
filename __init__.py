@@ -9,6 +9,10 @@ from adapt.intent import IntentBuilder
 from mycroft import MycroftSkill, intent_file_handler, intent_handler
 from mycroft.skills.context import adds_context, removes_context
 
+#import time
+#import serial
+#from controller.QboController import Controller
+
 # The skill class
 class Helperbot(MycroftSkill):
     def __init__(self):
