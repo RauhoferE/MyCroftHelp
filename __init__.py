@@ -95,7 +95,8 @@ class Helperbot(MycroftSkill):
         # TODO: Make Robot Smile
         self.speak_dialog("goodMoodD")
         if self.remindUserMorning:
-            self.speak_dialog("photo", expect_response=True)
+            #self.speak_dialog("photo", expect_response=True)
+            self.take_Photo_manually("s")
         
         
     # This function is called if the user has a bad mood.
@@ -108,7 +109,9 @@ class Helperbot(MycroftSkill):
         # TODO: Make Robot Sad 
         self.speak_dialog("badMoodD")
         if self.remindUserMorning:
-            self.speak_dialog("photo", expect_response=True)
+            #self.speak_dialog("photo", expect_response=True)
+            self.take_Photo_manually("s")
+
     
     # This function is called if the user agrees to taking his photo
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
