@@ -118,6 +118,7 @@ class Helperbot(MycroftSkill):
     @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
                                   require('FeelContext').build())
     @removes_context('FeelContext')
+    @adds_context('PhotoContext')
     def handle_pos_res_intent(self, message):
         # Handle Positive Respones
         # TODO: Make Robot Smile
@@ -130,6 +131,7 @@ class Helperbot(MycroftSkill):
     @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Bad").
                                   require('FeelContext').build())
     @removes_context('FeelContext')
+    @adds_context('PhotoContext')
     def handle_neg_res_intent(self, message):
         # Handle negative response
         # TODO: Make Robot Sad 
@@ -249,14 +251,12 @@ class Helperbot(MycroftSkill):
             # the following line needs your Twilio Account SID and Auth Token
         client = Client("AC3aede748210f547a02e9d406efcadcbb", 
         "31ae8c13f7a19e960e14369a8177417f")
-
+        #client.messages.create(to=numbers[0],from_="+12029913651",body=message)
     # change the "from_" number to your Twilio number and the "to" number
     # to the phone number you signed up for Twilio with, or upgrade your
     # account to send SMS to any phone number
         for number in numbers:
-            client.messages.create(to=number, 
-                        from_="+12029913651", 
-                        body=message)
+            client.messages.create(to=number,from_="+12029913651",body=message)
             pass
 
 # Here the skill is created
