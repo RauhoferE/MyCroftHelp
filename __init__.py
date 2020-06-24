@@ -84,6 +84,31 @@ class Helperbot(MycroftSkill):
     def take_Photo(self):
         self.speak_dialog("photo", expect_response=True)
         self.makepicture()
+
+        # This function is called if the user has a good mood.
+    @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
+                                  require('FeelContext').build())
+    @removes_context('FeelContext')
+    @adds_context('PhotoContext')
+    def handle_pos_res_intent(self, message):
+        # Handle Positive Respones
+        # TODO: Make Robot Smile
+        self.speak_dialog("goodMoodD")
+        if self.remindUserMorning:
+            self.take_Photo()
+        
+        
+    # This function is called if the user has a bad mood.
+    @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Bad").
+                                  require('FeelContext').build())
+    @removes_context('FeelContext')
+    @adds_context('PhotoContext')
+    def handle_neg_res_intent(self, message):
+        # Handle negative response
+        # TODO: Make Robot Sad 
+        self.speak_dialog("badMoodD")
+        if self.remindUserMorning:
+            self.take_Photo()
     
     # This function is called if the user agrees to taking his photo
     @intent_handler(IntentBuilder('YesPhotoIntent').require("Yes").
@@ -114,30 +139,7 @@ class Helperbot(MycroftSkill):
     #     self.remindUserEvening = False
 
 
-    # This function is called if the user has a good mood.
-    @intent_handler(IntentBuilder('BadMoodIntent').require("Me").require("Good").
-                                  require('FeelContext').build())
-    @removes_context('FeelContext')
-    @adds_context('PhotoContext')
-    def handle_pos_res_intent(self, message):
-        # Handle Positive Respones
-        # TODO: Make Robot Smile
-        self.speak_dialog("goodMoodD")
-        if self.remindUserMorning:
-            self.take_Photo()
-        
-        
-    # This function is called if the user has a bad mood.
-    @intent_handler(IntentBuilder('GoodMoodIntent').require("Me").require("Bad").
-                                  require('FeelContext').build())
-    @removes_context('FeelContext')
-    @adds_context('PhotoContext')
-    def handle_neg_res_intent(self, message):
-        # Handle negative response
-        # TODO: Make Robot Sad 
-        self.speak_dialog("badMoodD")
-        if self.remindUserMorning:
-            self.take_Photo()
+
 
     # This function is called when the user doesnt want to be reminded this morning or evening.
     # TODO: Theses probably need some work
