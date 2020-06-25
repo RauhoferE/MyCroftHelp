@@ -46,7 +46,11 @@ class Helperbot(MycroftSkill):
         self.speak_dialog('speakMessage')
         self.RecordMes() 
         self.SendMail()
-        self.sendSMS("Please send help I have fallen!", ["+436642375066"])
+        try:
+            self.sendSMS("Please send help I have fallen!", ["+436642375066"])
+        except:
+            pass
+        
     
     # This function is called if the person disagreed for help
     @intent_handler(IntentBuilder('NoHelpIntent').require("No").
